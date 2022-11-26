@@ -1,36 +1,23 @@
-const User = require("../models/user.js");
-var moment = require('moment');
+
+var UserService = require('../services/UserService');
 
 // 새 객체 생성
-exports.create = (req,res)=>{
+exports.create = async (req,res)=>{
     if(!req.body){
         res.status(400).send({
             message: "Content can not be empty!"
         });
     };
 
-    console.log(req.body);
+    const userService = new UserService();
 
-    const user = new User({
-        user_id: req.body.user_id,
-        nickname: req.body.nickname,
-        phone: req.body.phone,
-        password: req.body.password,
-        name: req.body.name,
-        school_id: req.body.school_id,
-        email: req.body.email,
-        regdate: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
-    });
-
-    // 데이터베이스에 저장
-    User.create(user, (err, data) =>{
-        if(err){
-            res.status(500).send({
-                message:
-                err.message || "Some error occured while creating th user."
-            });
-        };
-    })
+    try {
+        var result = await userService.signup(req);    
+        return res.send(result);
+    } catch (err) {
+        console.log(err);
+    }
+    
 };
 
 // 전체 조회 
