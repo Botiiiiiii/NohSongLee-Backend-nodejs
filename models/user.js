@@ -21,22 +21,15 @@ User.create = (newUser, result) => {
     });
 };
 
-User.findById = (userId, result) => {
-    sql.query("SELECT * FROM user Where id = ?",userId,(errmres)=>{
-        if(err){
-            console.log("error: ",err);
-            result(err,null);
-            return;
-        }
-        if(res.length){
-            console.log("found user: ",res[0]);
-            result(null,res[0]);
-            return;
-        }
-
-        result({kind: "not_found"},null);
-    });
-
+User.findById = async (userId,password) => {
+    try {
+        const [rows,fields] = await sql.promise().query("SELECT * FROM user Where user_id = ? and password = ?", [userId, password]);
+    
+        return rows;    
+    } catch (error) {
+        console.log(error);
+    }
+    
 };
 
 module.exports = User;

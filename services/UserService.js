@@ -1,5 +1,11 @@
 const User = require("../models/user"); // Database Model
+const jwt = require("jsonwebtoken");
+const algorithm = process.env.JWT_ALG;
+const expiresIn = process.env.JWT_EXPIRE;
+const jwt_option = {algorithm, expiresIn,};
 var moment = require('moment');
+const { sendError, sendSuccess } = require("../middlewares/response");
+
 
 class UserService {
 
@@ -15,15 +21,39 @@ class UserService {
         regdate: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     });
         
-    console.log(user);
     try {
         const result = await User.create(user);
-        return { success: true, body: result };
-    } catch (error) {
-        return { success: false, error: err };
+        return sendSuccess(result)
+    } catch (err) {
+        return sendError(err)
     }
     
   }
+  
+  async login ( req ) {
+    console.log(req.body);
+    try {
+        const user_id = req.body.user_id;
+        const password = req.body.password;
+        
+        let accessToken = jwt.sign({user_id: user_id}, process.env.JWT_S_KEY,jwt_option);
+        
+        var result = await User.findById(user_id,password);
+        if (result.length){
+            delete result[0].password;
+            result[0].jwt = accessToken;
+            return sendSuccess(result[0]);
+        }
+        else
+            return sendError("No Match")
+   } catch (err) {
+        console.log(err)
+        return { success: false, error: err };
+   }
+   
+ };
+
+
 }
 
 module.exports = UserService;
