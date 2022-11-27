@@ -23,7 +23,7 @@ Board.create = (newBoard, result) => {
 
 Board.findById = async (boardId) => {
     try {
-        const [rows,fields] = await sql.promise().query("SELECT * FROM board Where id = ? and password = ?", boardId);
+        const [rows,fields] = await sql.promise().query("SELECT * FROM board Where id = ?", boardId);
     
         return rows;    
     } catch (error) {
@@ -31,5 +31,15 @@ Board.findById = async (boardId) => {
     }
     
 };
+
+Board.findAll = async () => {
+    try {
+        const [rows,fields] = await sql.promise().query("SELECT * FROM board ORDER BY regdate");
+    
+        return rows;    
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = Board;

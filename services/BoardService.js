@@ -6,7 +6,7 @@ const { sendError, sendSuccess } = require("../middlewares/response");
 class BoardService {
 
   async create ( req ) { // 게시판 글 작성
-    console.log(req.tokenInfo.userId);
+    
     const board = new Board({
         title: req.body.title,
         writer: req.tokenInfo.userId,
@@ -23,6 +23,15 @@ class BoardService {
         return sendError(err)
     }
     
+  }
+
+  async getAll (req) { // Board 조회
+    try {
+        const result = await Board.findAll();
+        return sendSuccess(result)
+    } catch (err) {
+        return sendError(err)
+    }
   }
 
 }

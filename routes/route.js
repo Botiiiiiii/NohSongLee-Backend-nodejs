@@ -10,5 +10,6 @@ module.exports = app =>{
 
     
     app.post("/board/write", authMiddleware, board.create);
+    app.get("/board/list", board.getList);
 
 };
