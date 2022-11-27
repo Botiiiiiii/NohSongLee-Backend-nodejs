@@ -5,7 +5,7 @@ var logger = require('morgan');
 
 const app = express();
 
-const PORT = 8080;
+const PORT = 3000;
 
 // Parse requests of content-type: application/json
 app.use(bodyParser.json());
