@@ -31,12 +31,11 @@ class UserService {
   }
   
   async login ( req ) {
-    console.log(req.body);
     try {
         const user_id = req.body.user_id;
         const password = req.body.password;
         
-        let accessToken = jwt.sign({user_id: user_id}, process.env.JWT_S_KEY,jwt_option);
+        let accessToken = jwt.sign({userId: user_id}, process.env.JWT_S_KEY,jwt_option);
         
         var result = await User.findById(user_id,password);
         if (result.length){
