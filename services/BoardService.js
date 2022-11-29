@@ -78,6 +78,22 @@ class BoardService {
 
     
   }
+
+  async search (req) {
+    try {
+        const searchWord = req.query.searchWord;
+
+        var result = await Board.search(searchWord);
+        if (result.length){
+            return sendSuccess(result);
+        }
+        else
+            return sendError("No Match")
+   } catch (err) {
+        console.log(err)
+        return sendError(err);
+   }
+  }
 }
 
 module.exports = BoardService;

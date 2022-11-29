@@ -58,3 +58,16 @@ exports.updateBoardId = async (req,res,next) => {
         return res.status(500).send();
     }
 }
+
+exports.search = async (req,res,next) => {
+
+    const boardService = new BoardService();
+
+    try {
+        var result = await boardService.search(req);
+        return res.status(200).send(result);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+}

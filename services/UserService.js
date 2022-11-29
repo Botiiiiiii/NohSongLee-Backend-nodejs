@@ -52,6 +52,47 @@ class UserService {
    
  };
 
+ async findFollow ( req ) {
+    try {
+        const user_id = req.tokenInfo.userId;
+        
+        var result = await User.findFollowById(user_id);
+        if (result.length){
+            return sendSuccess(result);
+        }
+        else
+            return sendError("No Match")
+   } catch (err) {
+        console.log(err)
+        return sendError(err);
+   }
+   
+ };
+
+ async followadd ( req ) {
+    try {
+        const user_id = req.tokenInfo.userId;
+        const school_id = req.body.school_id;
+        
+        var followdata = {
+            user_id: user_id,
+            school_id: school_id
+        }
+
+        var result = await User.AddFollow(followdata);
+        console.log(result);
+        if (result.affectedRows == 1){
+            return sendSuccess(result);
+        }
+        else
+            return sendError("DB Error");
+   } catch (err) {
+        console.log(err)
+        return sendError(err);
+   }
+   
+ };
+
 
 }
 

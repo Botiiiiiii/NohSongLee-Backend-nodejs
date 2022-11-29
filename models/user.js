@@ -35,4 +35,45 @@ User.findById = async (userId,password) => {
     
 };
 
+User.findFollowById = async (userId) => {
+    try {
+        const [rows,fields] = await sql.promise().query("SELECT follow.school_id, school.name FROM follow join school on follow.school_id = school.id WHERE follow.user_id = ?", userId, (err,res) => {
+            if(err){
+                console.log(err);
+            }
+        });
+    
+        return rows;    
+    } catch (error) {
+        console.log(error);
+    }
+    
+};
+
+User.AddFollow = async (data) => {
+    try {
+        const [rows,fields] = await sql.promise().query("INSERT INTO follow SET ?",data);
+
+        return rows;    
+    } catch (error) {
+        console.log(error);
+        return error
+    }
+}
+
+User.findFollowById2 = async (userId) => {
+    try {
+        const [rows,fields] = await sql.promise().query("SELECT follow.school_id, school.name FROM follow join school on follow.school_id = school.id WHERE follow.user_id = ?", userId, (err,res) => {
+            if(err){
+                console.log(err);
+            }
+        });
+    
+        return rows;    
+    } catch (error) {
+        console.log(error);
+    }
+    
+};
+
 module.exports = User;

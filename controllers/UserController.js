@@ -38,59 +38,38 @@ exports.login = async (req,res)=>{
     }
 };
 
-// id로 갱신
-exports.update = (req,res)=>{
-    // Validate Request
-  if (!req.body) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-  }
+// id로 조회
+exports.findFollow = async (req,res)=>{
+    if(!req.body){
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    };
 
-  Customer.updateById(
-    req.params.customerId,
-    new Customer(req.body),
-    (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found Customer with id ${req.params.customerId}.`
-          });
-        } else {
-          res.status(500).send({
-            message: "Error updating Customer with id " + req.params.customerId
-          });
-        }
-      } else res.send(data);
+    const userService = new UserService();
+
+    try {
+        var result = await userService.findFollow(req);    
+        return res.send(result);
+    } catch (err) {
+        console.log(err);
     }
-  );
 };
 
-// id로 삭제
-exports.delete = (req,res)=>{
-    Customer.remove(req.params.customerId, (err, data) => {
-        if (err) {
-          if (err.kind === "not_found") {
-            res.status(404).send({
-              message: `Not found Customer with id ${req.params.customerId}.`
-            });
-          } else {
-            res.status(500).send({
-              message: "Could not delete Customer with id " + req.params.customerId
-            });
-          }
-        } else res.send({ message: `Customer was deleted successfully!` });
-      });
-};
+// id로 조회
+exports.addFollow = async (req,res)=>{
+    if(!req.body){
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    };
 
-// 전체 삭제
-exports.deleteAll = (req,res)=>{
-    Customer.removeAll((err, data) => {
-        if (err)
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while removing all customers."
-          });
-        else res.send({ message: `All Customers were deleted successfully!` });
-      });
+    const userService = new UserService();
+
+    try {
+        var result = await userService.followadd(req);    
+        return res.send(result);
+    } catch (err) {
+        console.log(err);
+    }
 };
