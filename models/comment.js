@@ -1,11 +1,12 @@
 const sql = require("./db.js");
 
 const Comment = function(comment){
-    this.board_id = comment.board_id;
-    this.parent_id = comment.parent_id;
-    this.writer = comment.wrtier;
+    this.board_id = comment.boardId;
+    this.parent_id = comment.parentId;
+    this.writer = comment.writer;
     this.content = comment.content;
     this.regdate = comment.regdate;
+    this.comment_like = 0;
 };
 
 Comment.create = (newComment, result) => {
@@ -50,11 +51,11 @@ Comment.findByboardId = async (boardId) => {
 };
 
 
-Comment.update = async () => {
+Comment.update = async (updated, commentId) => {
     try {
-        const [rows,fields] = await sql.promise().query("SELECT * FROM board ORDER BY regdate");
+        const [rows,fields] = await sql.promise().query("update comment SET ? WHERE id = ?",[updated,commentId]);
     
-        return rows;    
+        return rows;
     } catch (error) {
         console.log(error);
     }

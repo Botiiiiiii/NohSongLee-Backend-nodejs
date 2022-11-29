@@ -5,21 +5,20 @@ const { sendError, sendSuccess } = require("../middlewares/response");
 const { promise } = require("../models/db");
 
 
-class BoardService {
+class CommentService {
 
   async create ( req ) { // 게시판 글 작성
     
-    const board = new Board({
-        title: req.body.title,
+    const comment = new Comment({
+        boardId: req.body.BoardId,
+        parentId: req.body.ParentId,
         writer: req.tokenInfo.userId,
         content: req.body.content,
-        topic: req.body.topic,
-        school_id: req.body.school_id,
         regdate: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
     });
     
     try {
-        const result = await Board.create(board);
+        const result = await Comment.create(comment);
         return sendSuccess(result)
     } catch (err) {
         return sendError(err)
@@ -27,46 +26,23 @@ class BoardService {
     
   }
 
-  async getAll () { // Board 조회
-    try {
-        const result = await Board.findAll();
-        return sendSuccess(result)
-    } catch (err) {
-        return sendError(err);
-    }
-}
-
-
-  async getOne (req) {
-    try {
-        var boardId = req.params.BoardId
-        
-        const result1 = await Board.findByboardIdWithComment(boardId);
-        const result2 = await Comment.findByboardId(boardId);
-        const result = [result1, result2];
-
-        return sendSuccess(result);
-    } catch (err) {
-        return sendError(err);
-    }
-  }
-
   async update (req){
     
     try {
-        const boardId = req.body.BoardId
+        const commentId = req.body.CommentId;
         const userId = req.tokenInfo.userId;
         
-        console.log(req.body.content);
 
-        var result = await Board.findByboardId(boardId);
+        var result = await Comment.findById(commentId);
+        console.log(result[0]);
+        console.log(userId);
         if (result[0].writer === userId){
             const updated = {
                 content: req.body.content,
                 regdate: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
             };
-            console.log(updated);
-            const result = Board.update(updated,boardId);
+            
+            const result = Comment.update(updated,commentId);
             return sendSuccess("Updated");
         }
         else
@@ -80,4 +56,4 @@ class BoardService {
   }
 }
 
-module.exports = BoardService;
+module.exports = CommentService;
