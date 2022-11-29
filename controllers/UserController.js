@@ -73,3 +73,21 @@ exports.addFollow = async (req,res)=>{
         console.log(err);
     }
 };
+
+// id로 조회
+exports.DeleteFollow = async (req,res)=>{
+    if(!req.body){
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    };
+
+    const userService = new UserService();
+
+    try {
+        var result = await userService.followdelete(req);    
+        return res.send(result);
+    } catch (err) {
+        console.log(err);
+    }
+};

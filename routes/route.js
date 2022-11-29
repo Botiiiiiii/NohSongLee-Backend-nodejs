@@ -11,6 +11,7 @@ module.exports = app =>{
     app.post("/users/login", users.login);
     app.get("/users/follow", authMiddleware, users.findFollow);
     app.post("/users/follow/add", authMiddleware, users.addFollow);
+    app.post("/users/follow/delete", authMiddleware, users.DeleteFollow);
 
     // 게시판
     app.post("/board/write", authMiddleware, board.create);
