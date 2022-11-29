@@ -1,16 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-var logger = require('morgan');
+const logger = require('morgan');
+const cors = require("cors");
 
 const app = express();
 
-const PORT = 3000;
+const PORT = 12854;
 
 // Parse requests of content-type: application/json
 app.use(bodyParser.json());
 app.use(logger('dev'));
-
+app.use(cors());
 
 // Parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
