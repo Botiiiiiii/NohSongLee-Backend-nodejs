@@ -4,7 +4,7 @@ const Board = function(board){
     this.title = board.title;
     this.writer = board.writer;
     this.content = board.content;
-    this.topic_id = board.topic_id;
+    this.topic = board.topic;
     this.school_id = board.school_id;
     this.regdate = board.regdate;
     this.view_count = 0;
@@ -23,7 +23,12 @@ Board.create = (newBoard, result) => {
 
 Board.findById = async (boardId) => {
     try {
-        const [rows,fields] = await sql.promise().query("SELECT * FROM board Where id = ?", boardId);
+        const [rows,fields] = await sql.promise().query("SELECT board.id, board.title, board.writer, board.content, school.name as school, board.topic, board.regdate, board.view_count, board.like_count, board.comment_count FROM board left join school on board.school_id = school.id WHERE board.id = ?", boardId,  (err,res)=>{
+            if(err){
+                console.log("error: ",err);
+                return;
+            }
+        });
     
         return rows;    
     } catch (error) {
@@ -34,8 +39,8 @@ Board.findById = async (boardId) => {
 
 Board.findAll = async () => {
     try {
-        const [rows,fields] = await sql.promise().query("SELECT * FROM board ORDER BY regdate");
-    
+        const [rows,fields] = await sql.promise().query("SELECT board.id, board.title, board.writer, board.content, school.name as school, board.topic, board.regdate, board.view_count, board.like_count, board.comment_count FROM board left join school on board.school_id = school.id ORDER BY regdate");
+
         return rows;    
     } catch (error) {
         console.log(error);

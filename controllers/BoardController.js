@@ -1,4 +1,3 @@
-
 var BoardService = require('../services/BoardService');
 
 // 새 객체 생성
@@ -20,13 +19,26 @@ exports.create = async (req,res)=>{
     
 };
 
-// id로 조회
+// 전체 조회
 exports.getList = async (req,res)=>{
 
     const boardService = new BoardService();
 
     try {
         var result = await boardService.getAll();    
+        return res.send(result);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+// id로 조회
+exports.getId = async (req,res)=>{
+
+    const boardService = new BoardService();
+
+    try {
+        var result = await boardService.getOne(req);    
         return res.send(result);
     } catch (err) {
         console.log(err);

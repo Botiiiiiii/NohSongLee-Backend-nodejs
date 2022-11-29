@@ -22,7 +22,11 @@ User.create = (newUser, result) => {
 
 User.findById = async (userId,password) => {
     try {
-        const [rows,fields] = await sql.promise().query("SELECT * FROM user Where user_id = ? and password = ?", [userId, password]);
+        const [rows,fields] = await sql.promise().query("SELECT user.user_id, user.nickname, user.name, user.phone, user.email, school.name as school, user.regdate FROM user  LEFT JOIN school on user.school_id = school.id WHERE user_id = ? and password = ?", [userId, password], (err,res) => {
+            if(err){
+                console.log(err);
+            }
+        });
     
         return rows;    
     } catch (error) {
