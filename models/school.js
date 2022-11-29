@@ -53,6 +53,16 @@ class School {
             return error
         }
     }
+
+    async findTopSchool () {
+        try {
+            const [rows,fields] = await sql.promise().query("SELECT school.name, count(board.school_id) as count FROM board left join school on board.school_id = school.id GROUP BY board.school_id ORDER BY count limit 5;");
+            return rows;
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    }
 }
 
 

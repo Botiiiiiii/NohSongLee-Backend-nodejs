@@ -31,3 +31,16 @@ exports.updatecommentId = async (req,res,next) => {
         return res.status(500).send();
     }
 }
+
+exports.deletecommentId = async (req,res,next) => {
+    
+    const commentService = new CommentService();
+
+    try {
+        var result = await commentService.delete(req);
+        return res.status(200).send(result);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+}

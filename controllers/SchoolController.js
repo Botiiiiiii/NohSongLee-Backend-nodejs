@@ -42,3 +42,15 @@ exports.getSchoolInfo = async (req,res,next) => {
         return res.status(500).send();
     }
 }
+
+exports.getTopSchool = async (req,res,next) => {
+    const schoolService = new SchoolService();
+
+    try {
+        var result = await schoolService.getTopSchool(req);
+        return res.status(200).send(result);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send();
+    }
+}

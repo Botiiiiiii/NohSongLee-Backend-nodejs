@@ -61,4 +61,14 @@ Comment.update = async (updated, commentId) => {
     }
 }
 
+Comment.delete = async (commentId) => {
+    try {
+        const [rows,fields] = await sql.promise().query("DELETE FROM comment WHERE id = ?",commentId);
+    
+        return rows;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = Comment;

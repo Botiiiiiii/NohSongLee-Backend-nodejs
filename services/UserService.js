@@ -73,16 +73,22 @@ class UserService {
         try {
             const user_id = req.tokenInfo.userId;
             const school_id = req.body.school_id;
-
+            
             var followdata = {
                 user_id: user_id,
                 school_id: school_id
             }
 
+            var result1 = await User.findFollowById2(user_id,school_id);
+            console.log(result1);
+            if (result1.length){
+                return sendSuccess("Already Follow");
+            }
+
             var result = await User.AddFollow(followdata);
-            console.log(result);
+            
             if (result.affectedRows == 1) {
-                return sendSuccess(result);
+                return sendSuccess("Follow");
             }
             else
                 return sendError("DB Error");
@@ -95,6 +101,29 @@ class UserService {
 
 
     async followdelete(req) {
+        try {
+            const user_id = req.tokenInfo.userId;
+            const school_id = req.body.school_id;
+
+            var deleteData = [user_id, school_id];
+            
+
+            var result = await User.DeleteFollow(deleteData);
+            console.log(result);
+            if (result.affectedRows == 1) {
+                return sendSuccess("Unfollow");
+            }
+            else
+                return sendError("DB Error");
+        } catch (err) {
+            console.log(err)
+            return sendError(err);
+        }
+
+    };
+    
+    // 닉네임 중복 체크
+    async checkNick(req) {
         try {
             const user_id = req.tokenInfo.userId;
             const school_id = req.body.school_id;

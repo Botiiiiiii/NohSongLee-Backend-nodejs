@@ -12,6 +12,7 @@ module.exports = app =>{
     app.get("/users/follow", authMiddleware, users.findFollow);
     app.post("/users/follow/add", authMiddleware, users.addFollow);
     app.post("/users/follow/delete", authMiddleware, users.DeleteFollow);
+    // app.get("/users/checknick", users.nickcheck);
 
     // 게시판
     app.post("/board/write", authMiddleware, board.create);
@@ -22,11 +23,13 @@ module.exports = app =>{
     // 댓글
     app.post("/comment/write", authMiddleware, comment.create);
     app.put("/comment/edit", authMiddleware, comment.updatecommentId);
+    app.delete("/comment/delete", authMiddleware, comment.deletecommentId);
 
     // 학교
     app.get("/school", school.search);
     app.get("/school/:school_id/", school.searchInSchool);
     app.get("/school/:school_id/info", school.getSchoolInfo);
+    app.get("/school/ranked/list", school.getTopSchool);
 
     // 일반검색
     app.get("/board", board.search);

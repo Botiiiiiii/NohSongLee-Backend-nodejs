@@ -58,7 +58,7 @@ exports.findFollow = async (req,res)=>{
 
 // id로 조회
 exports.addFollow = async (req,res)=>{
-    if(!req.body){
+    if(!req.body || !req.body.school_id){
         res.status(400).send({
             message: "Content can not be empty!"
         });

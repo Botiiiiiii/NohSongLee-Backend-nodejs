@@ -65,6 +65,17 @@ class SchoolService {
         return sendError(err);
     } 
   }
+
+  async getTopSchool (req) {
+    try {
+        const school = new School();
+        var result = await school.findTopSchool();
+        return sendSuccess(result);
+    } catch (err) {
+        console.log(err)
+        return sendError(err);
+    } 
+  }
 }
 
 module.exports = SchoolService;
