@@ -12,5 +12,6 @@ module.exports = app =>{
     app.post("/board/write", authMiddleware, board.create);
     app.get("/board/list", board.getList);
     app.get("/board/:BoardId", board.getId);
+    app.put("/board/edit", authMiddleware,board.updateBoardId);
 
 };

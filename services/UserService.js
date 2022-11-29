@@ -35,7 +35,7 @@ class UserService {
         const user_id = req.body.user_id;
         const password = req.body.password;
         
-        let accessToken = jwt.sign({userId: user_id}, process.env.JWT_S_KEY,jwt_option);
+        let accessToken = jwt.sign({userId: user_id, password: password}, process.env.JWT_S_KEY,jwt_option);
         
         var result = await User.findById(user_id,password);
         if (result.length){
@@ -47,7 +47,7 @@ class UserService {
             return sendError("No Match")
    } catch (err) {
         console.log(err)
-        return { success: false, error: err };
+        return sendError(err);
    }
    
  };

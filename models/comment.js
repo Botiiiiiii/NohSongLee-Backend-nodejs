@@ -33,9 +33,9 @@ Comment.findById = async (id) => {
     
 };
 
-Comment.findByboardId = async (boardId) => {x
+Comment.findByboardId = async (boardId) => {
     try {
-        const [rows,fields] = await sql.promise().query("SELECT * FROM comment Where board_id = ? ORDER BY regdate", boardId, (err,res)=>{
+        const [rows,fields] = await sql.promise().query("SELECT comment.id, comment.board_id, comment.parent_id, comment.writer, school.name as writer_school, comment.content, comment.regdate FROM comment left join user on comment.writer = user.nickname left join school on user.school_id = school.id Where board_id = ? ORDER BY comment.regdate", boardId, (err,res)=>{
             if(err){
                 console.log("error: ",err);
                 return;

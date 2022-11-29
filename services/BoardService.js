@@ -27,31 +27,56 @@ class BoardService {
     
   }
 
-  async getAll (req) { // Board 조회
+  async getAll () { // Board 조회
     try {
         const result = await Board.findAll();
         return sendSuccess(result)
     } catch (err) {
-        return sendError(err)
+        return sendError(err);
     }
 }
 
 
   async getOne (req) {
     try {
-        const boardId = req.params.BoardId
-        console.log(boardId)
-        // const result = promise.all([
-        //     await Board.findByboardId(boardId),
-        //     await Comment.findByboardId(boardId)
-        // ])
-            const result1 = await Board.findByboardId(boardId);
-            const result2 = await Comment.findByboardId(boardId);
-            var result = [result1, result2];
-        return sendSuccess(result)
+        var boardId = req.params.BoardId
+        
+        const result1 = await Board.findByboardIdWithComment(boardId);
+        const result2 = await Comment.findByboardId(boardId);
+        const result = [result1, result2];
+
+        return sendSuccess(result);
     } catch (err) {
-        return sendError(err)
+        return sendError(err);
     }
+  }
+
+  async update (req){
+    
+    try {
+        const boardId = req.body.BoardId
+        const userId = req.tokenInfo.user_id;
+        
+        console.log(req.body.content);
+
+        var result = await Board.findByboardId(boardId);
+        if (result[0].user_id === userId){
+            const updated = {
+                content: req.body.content,
+                regdate: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')
+            };
+            console.log(updated);
+            const result = Board.update(updated,boardId);
+            return sendSuccess(result);
+        }
+        else
+            return sendError("Only writer can modify!")
+   } catch (err) {
+        console.log(err)
+        return sendError(err);
+   }
+
+    
   }
 }
 
