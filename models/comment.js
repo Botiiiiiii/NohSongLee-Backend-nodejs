@@ -71,4 +71,15 @@ Comment.delete = async (commentId) => {
     }
 }
 
+Comment.addcount = async () => {
+    try {
+        const [rows,fields] = await sql.promise().query("UPDATE board SET view_count = view_count + 1");
+
+        return rows;    
+    } catch (error) {
+        console.log(error);
+        return error
+    }
+}
+
 module.exports = Comment;

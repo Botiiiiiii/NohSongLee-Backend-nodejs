@@ -95,5 +95,15 @@ Board.search = async (word) => {
     }
 }
 
+Board.addcount = async () => {
+    try {
+        const [rows,fields] = await sql.promise().query("UPDATE board SET view_count = view_count + 1");
+
+        return rows;    
+    } catch (error) {
+        console.log(error);
+        return error
+    }
+}
 
 module.exports = Board;
