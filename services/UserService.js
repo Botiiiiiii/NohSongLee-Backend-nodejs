@@ -127,7 +127,7 @@ class UserService {
         try {
             const user_id = req.tokenInfo.userId;
             const school_id = req.body.school_id;
-
+            
             var deleteData = [user_id, school_id];
             
 
@@ -145,6 +145,56 @@ class UserService {
 
     };
 
+    async AddLike(req) {
+        try {
+            const user_id = req.tokenInfo.userId;
+            const school_id = req.body.school_id;
+            var addData = {
+                user_id: user_id,
+                school_id: school_id
+            }
+
+            var result1 = await User.findFollowById2(user_id,school_id);
+            console.log(result1);
+            if (result1.length){
+                return sendSuccess("Already Like");
+            }
+
+            var result = await User.addLike(followdata);
+            
+            if (result.affectedRows == 1) {
+                return sendSuccess("Like");
+            }
+            else
+                return sendError("DB Error");
+
+        } catch (err) {
+            console.log(err)
+            return sendError(err);
+        }
+    };
+
+    async DeleteAdd(req) {
+        try {
+            const user_id = req.tokenInfo.userId;
+            const school_id = req.body.school_id;
+            
+            var deleteData = [user_id, school_id];
+            
+
+            var result = await User.deleteLike(deleteData);
+            console.log(result);
+            if (result.affectedRows == 1) {
+                return sendSuccess("Ok");
+            }
+            else
+                return sendError("DB Error");
+        } catch (err) {
+            console.log(err)
+            return sendError(err);
+        }
+
+    };
 }
 
 module.exports = UserService;

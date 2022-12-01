@@ -91,3 +91,37 @@ exports.DeleteFollow = async (req,res)=>{
         console.log(err);
     }
 };
+
+exports.addlike = async (req,res)=>{
+    if(!req.body){
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    };
+
+    const userService = new UserService();
+
+    try {
+        var result = await userService.AddLike(req);    
+        return res.send(result);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+exports.deletelike = async (req,res)=>{
+    if(!req.body){
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    };
+
+    const userService = new UserService();
+
+    try {
+        var result = await userService.DeleteLike(req);    
+        return res.send(result);
+    } catch (err) {
+        console.log(err);
+    }
+};

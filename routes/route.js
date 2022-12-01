@@ -5,6 +5,7 @@ module.exports = app =>{
     const board = require("../controllers/BoardController");
     const comment = require("../controllers/CommentController");
     const school = require("../controllers/SchoolController");
+    const like = require("../controllers/LikeController");
 
     // 회원가입
     app.post("/users/signup", users.create);
@@ -33,4 +34,9 @@ module.exports = app =>{
 
     // 일반검색
     app.get("/board", board.search);
+
+    // 좋아요
+    app.post("/users/like/add", authMiddleware,like.addlike);
+    app.delete("/users/like/delete", authMiddleware,like.deletelike);
+    
 };
