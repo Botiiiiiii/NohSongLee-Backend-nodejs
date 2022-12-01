@@ -72,9 +72,9 @@ User.DeleteFollow = async (data) => {
     }
 }
 
-User.findFollowById2 = async (userId) => {
+User.findFollowById2 = async (userId, schoolId) => {
     try {
-        const [rows,fields] = await sql.promise().query("SELECT follow.school_id, school.name FROM follow join school on follow.school_id = school.id WHERE follow.user_id = ?", userId, (err,res) => {
+        const [rows,fields] = await sql.promise().query("SELECT follow.school_id, school.name FROM follow join school on follow.school_id = school.id WHERE follow.user_id = ? and follow.school_id = ?", userId, schoolId, (err,res) => {
             if(err){
                 console.log(err);
             }
