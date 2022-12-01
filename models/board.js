@@ -106,4 +106,14 @@ Board.addcount = async () => {
     }
 }
 
+Board.delete = async (boardId) => {
+    try {
+        const [rows,fields] = await sql.promise().query("DELETE FROM board WHERE board_id = ?",boardId);
+    
+        return rows;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 module.exports = Board;

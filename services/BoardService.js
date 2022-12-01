@@ -95,6 +95,29 @@ class BoardService {
         return sendError(err);
    }
   }
+
+  async delete (req) {
+    try {
+        const board_id = req.params.BoardId;
+        const user_id = req.tokenInfo.userId;
+        
+        var check = Board.findByboardId(board_id);
+        if (!check.length){
+            var result = await Board.delete(board_id);
+            if (result.id == board_id) {
+                return sendSuccess("Deleted!");
+            }
+            else
+                return sendError("DB Error");
+        }
+        else{
+            return sendError("No Match")
+        }
+   } catch (err) {
+        console.log(err)
+        return sendError(err);
+   }
+  }
 }
 
 module.exports = BoardService;
