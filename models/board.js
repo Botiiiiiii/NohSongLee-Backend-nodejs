@@ -95,9 +95,9 @@ Board.search = async (word) => {
     }
 }
 
-Board.addcount = async () => {
+Board.addcount = async (boardId) => {
     try {
-        const [rows,fields] = await sql.promise().query("UPDATE board SET view_count = view_count + 1");
+        const [rows,fields] = await sql.promise().query("UPDATE board SET view_count = view_count + 1 WHERE id = ?",boardId);
 
         return rows;    
     } catch (error) {

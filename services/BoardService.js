@@ -43,9 +43,8 @@ class BoardService {
         
         const result1 = await Board.findByboardIdWithComment(boardId);
         const result2 = await Comment.findByboardId(boardId);
-        await Board.addcount();
+        await Board.addcount(boardId);
         const result = [result1, result2];
-
         return sendSuccess(result);
     } catch (err) {
         return sendError(err);
